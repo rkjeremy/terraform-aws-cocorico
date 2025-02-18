@@ -35,7 +35,7 @@ data "aws_iam_policy_document" "CloudTrail_CloudWatchLogs_Role_Policy" {
 }
 
 resource "aws_iam_policy" "cloudtrail-policy" {
-  name        = "cocorico-cloudtrail-policy"
+  name        = "${var.project_codename}-cloudtrail-policy"
   description = "This policy grants CloudTrail the permissions required to create a CloudWatch Logs log stream in the log group ${aws_cloudwatch_log_group.cocorico_cwlg.name} and to deliver CloudTrail events to that log stream."
   policy      = data.aws_iam_policy_document.CloudTrail_CloudWatchLogs_Role_Policy.json
 }

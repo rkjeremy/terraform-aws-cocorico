@@ -28,3 +28,8 @@ variable "project_codename" {
   type    = string
   default = "cocorico"
 }
+
+variable "sns_topic_subscribers_email_address" {
+  type    = string
+  default = "randriakj@gmail.com"
+}

@@ -6,24 +6,30 @@ const snsClient = new SNSClient({});
 let input = {
   // PublishInput
   TopicArn: process.env.TOPIC_ARN,
-  Subject: "Cocorico alert",
-  Message: "hello from hell",
+  Subject: `${process.env.PROJECT_NAME} Alert`,
+  Message: `
+  Chers administrateurs,
+  Un changement a eu lieu dans votre compte AWS 
+  `,
 };
 
-export const handler = async (event, context) => {
+export const handler = (event, context) => {
   let payload = Buffer.from(event.awslogs.data, "base64");
   zlib.gunzip(payload, async (e, result) => {
     if (e) {
       context.fail(e);
       return JSON.stringify(e);
     } else {
-      let temp = JSON.parse(result.toString());
-      console.log("Event Data:", JSON.stringify(temp, null, 2));
-      // context.succeed();
-
+      let eventData = JSON.parse(result.toString());
+      input.Message = `
+        Chers administrateurs,
+        Un changement a eu lieu dans votre compte AWS portant l'ID ${eventData.owner}. Veuillez consulter le Log Stream portant le nom ${eventData.logStream} dans votre Cloudwatch 
+        Log Group ${eventData.logGroup} pour avoir plus de détails.
+        `;
       try {
+        // input.Message = JSON.stringify(temp);
         const response = await snsClient.send(new PublishCommand(input));
-        console.log({ response });
+        // console.log({ response });
 
         return {
           statusCode: 200,

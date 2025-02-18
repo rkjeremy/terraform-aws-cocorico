@@ -1,6 +1,6 @@
 locals {
-  trail_name           = "cocorico_trail"
-  lambda_function_name = "cocorico_function"
+  trail_name           = "${var.project_codename}_trail"
+  lambda_function_name = "${var.project_codename}_function"
 }
 
 locals {

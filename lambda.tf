@@ -91,8 +91,7 @@ resource "aws_cloudwatch_log_subscription_filter" "logging" {
   destination_arn = aws_lambda_function.logging.arn
 
   #   Build the pattern dynamically
-  #   filter_pattern = "{${local.metric_filter_pattern}}"
-  filter_pattern = ""
+  filter_pattern = "{${local.metric_filter_pattern}}"
 
   log_group_name = aws_cloudwatch_log_group.cocorico_cwlg.name
   name           = "${var.project_codename}_logging"

@@ -26,3 +26,9 @@ resource "aws_iam_role_policy_attachment" "lambda_sns" {
   role       = aws_iam_role.iam_for_lambda.name
   policy_arn = aws_iam_policy.AllowPublishOnly.arn
 }
+
+resource "aws_sns_topic_subscription" "user_updates_sqs_target" {
+  topic_arn = aws_sns_topic.sns_topic.arn
+  protocol  = "email"
+  endpoint  = var.sns_topic_subscribers_email_address
+}

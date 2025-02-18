@@ -2,7 +2,7 @@
 
 ## 1.a. First we create the bucket to store our API events logs from Cloudtrail
 resource "aws_s3_bucket" "cocorico_bucket" {
-  bucket_prefix = "cocorico-trails-"
+  bucket_prefix = "${var.project_codename}-trails-"
   force_destroy = true
 }
 
