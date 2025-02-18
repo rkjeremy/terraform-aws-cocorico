@@ -1,34 +1,11 @@
-resource "aws_sns_topic" "sns_topic" {
+# Here we create the SNS Topic with its subscribers.
+
+resource "aws_sns_topic" "the_topic" {
   name = "${var.project_codename}-topic"
 }
 
-data "aws_iam_policy_document" "AllowPublishOnly_policy_doc" {
-  statement {
-    sid    = "AllowSNSPublishAPIOnly"
-    effect = "Allow"
-
-    actions = [
-      "sns:Publish",
-    ]
-
-    resources = [aws_sns_topic.sns_topic.arn]
-  }
-}
-
-resource "aws_iam_policy" "AllowPublishOnly" {
-  name        = "AllowPublishOnly"
-  path        = "/${var.project_codename}/"
-  description = "IAM policy for publishing an SNS message from a lambda"
-  policy      = data.aws_iam_policy_document.AllowPublishOnly_policy_doc.json
-}
-
-resource "aws_iam_role_policy_attachment" "lambda_sns" {
-  role       = aws_iam_role.iam_for_lambda.name
-  policy_arn = aws_iam_policy.AllowPublishOnly.arn
-}
-
-resource "aws_sns_topic_subscription" "user_updates_sqs_target" {
-  topic_arn = aws_sns_topic.sns_topic.arn
+resource "aws_sns_topic_subscription" "the_sns_topic_subscription" {
+  topic_arn = aws_sns_topic.the_topic.arn
   protocol  = "email"
   endpoint  = var.sns_topic_subscribers_email_address
 }

@@ -1,3 +1,5 @@
+// This is the source code that publish the messages to the SNS Topic when a change occured within the AWS Account in any region.
+
 import zlib from "zlib";
 import { SNSClient, PublishCommand } from "@aws-sdk/client-sns";
 
@@ -7,10 +9,7 @@ let input = {
   // PublishInput
   TopicArn: process.env.TOPIC_ARN,
   Subject: `${process.env.PROJECT_NAME} Alert`,
-  Message: `
-  Chers administrateurs,
-  Un changement a eu lieu dans votre compte AWS 
-  `,
+  Message: "",
 };
 
 export const handler = (event, context) => {
@@ -23,13 +22,10 @@ export const handler = (event, context) => {
       let eventData = JSON.parse(result.toString());
       input.Message = `
         Chers administrateurs,
-        Un changement a eu lieu dans votre compte AWS portant l'ID ${eventData.owner}. Veuillez consulter le Log Stream portant le nom ${eventData.logStream} dans votre Cloudwatch 
-        Log Group ${eventData.logGroup} pour avoir plus de détails.
+        Un changement a eu lieu dans votre compte AWS portant l'ID ${eventData.owner}. Veuillez consulter le Log Stream portant le nom ${eventData.logStream} dans votre Cloudwatch Log Group ${eventData.logGroup} pour avoir plus de détails.
         `;
       try {
-        // input.Message = JSON.stringify(temp);
         const response = await snsClient.send(new PublishCommand(input));
-        // console.log({ response });
 
         return {
           statusCode: 200,
