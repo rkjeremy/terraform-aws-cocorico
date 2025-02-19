@@ -1,27 +1,21 @@
-# variable "aws_access_key" {
-#   type     = string
-#   nullable = false
-# }
-
 variable "aws_region" {
   type    = string
   default = "af-south-1"
 }
 
-# variable "aws_secret_key" {
-#   type      = string
-#   nullable  = false
-#   sensitive = true
-# }
-
-variable "aws_profile" {
-  type     = string
-  nullable = false
+variable "enable_logging" {
+  type    = bool
+  default = true
 }
 
 variable "event_names" {
   type    = list(string)
   default = ["RunInstances", "TerminateInstances"]
+}
+
+variable "event_sources" {
+  type    = list(string)
+  default = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
 }
 
 variable "project_codename" {
@@ -30,6 +24,6 @@ variable "project_codename" {
 }
 
 variable "sns_topic_subscribers_email_address" {
-  type    = string
-  default = "randriakj@gmail.com"
+  type    = set(string)
+  default = ["randriakj@gmail.com", "koloinaimaginieur@gmail.com"]
 }

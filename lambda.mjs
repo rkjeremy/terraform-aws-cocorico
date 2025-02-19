@@ -20,10 +20,14 @@ export const handler = (event, context) => {
       return JSON.stringify(e);
     } else {
       let eventData = JSON.parse(result.toString());
+
       input.Message = `
-        Chers administrateurs,
-        Un changement a eu lieu dans votre compte AWS portant l'ID ${eventData.owner}. Veuillez consulter le Log Stream portant le nom ${eventData.logStream} dans votre Cloudwatch Log Group ${eventData.logGroup} pour avoir plus de détails.
-        `;
+      Chers administrateurs,
+      Un changement a eu lieu dans votre compte AWS portant l'ID ${eventData.owner}.
+      https://${process.env.REGION}.console.aws.amazon.com/cloudwatch/home?region=${process.env.REGION}#logsV2:log-groups/log-group/${eventData.logGroup}/log-events?${eventData.logStream}
+      Cliquez sur le lien pour voir les détails.
+      `;
+
       try {
         const response = await snsClient.send(new PublishCommand(input));
 

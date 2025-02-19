@@ -1,0 +1,5 @@
+project_codename                    = "cocorico"
+aws_region                          = "af-south-1"
+enable_logging                      = false
+event_sources                       = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+sns_topic_subscribers_email_address = ["example1@example.com", "example2@example.com", "example3@example.com"]

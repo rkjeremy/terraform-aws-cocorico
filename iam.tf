@@ -167,3 +167,11 @@ resource "aws_iam_role_policy_attachment" "lambda_sns_role_policy_attachment" {
   role       = aws_iam_role.the_lambda_function_role.name
   policy_arn = aws_iam_policy.AllowPublishOnly.arn
 }
+
+##############################################################################################################################################################
+
+data "aws_caller_identity" "current" {}
+
+data "aws_partition" "current" {}
+
+data "aws_region" "current" {}
