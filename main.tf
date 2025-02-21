@@ -18,9 +18,26 @@ resource "aws_cloudtrail" "the_trail" {
   is_multi_region_trail = true
   s3_bucket_name        = aws_s3_bucket.the_bucket.id
 
-  event_selector {
-    read_write_type                  = "WriteOnly"
-    exclude_management_event_sources = ["rdsdata.amazonaws.com"]
+  # event_selector {
+  #   read_write_type                  = "WriteOnly"
+  #   exclude_management_event_sources = ["rdsdata.amazonaws.com"]
+  # }
+
+  advanced_event_selector {
+    name = "Log all management events except Amazon RDS Data API management events"
+    field_selector {
+      field  = "eventCategory"
+      equals = ["Management"]
+    }
+    field_selector {
+      field      = "eventSource"
+      equals     = var.event_sources
+      not_equals = ["rdsdata.amazonaws.com"]
+    }
+    field_selector {
+      field  = "readOnly"
+      equals = [false]
+    }
   }
 
   cloud_watch_logs_group_arn = "${aws_cloudwatch_log_group.the_trail_cwlg.arn}:*" # CloudTrail requires the Log Stream wildcard
