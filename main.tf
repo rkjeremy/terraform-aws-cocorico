@@ -18,11 +18,6 @@ resource "aws_cloudtrail" "the_trail" {
   is_multi_region_trail = true
   s3_bucket_name        = aws_s3_bucket.the_bucket.id
 
-  # event_selector {
-  #   read_write_type                  = "WriteOnly"
-  #   exclude_management_event_sources = ["rdsdata.amazonaws.com"]
-  # }
-
   advanced_event_selector {
     name = "Log all management events except Amazon RDS Data API management events"
     field_selector {

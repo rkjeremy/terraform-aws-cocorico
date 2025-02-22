@@ -12,7 +12,8 @@ data "aws_iam_policy_document" "cloudtrail_assume_role" {
 }
 
 resource "aws_iam_role" "the_trail_s_role" {
-  name               = "CloudTrail_CloudWatchLogs_Role"
+  name               = "Cloudtrail-CloudwatchLogGroupAccess"
+  path               = "/${var.project_codename}/"
   assume_role_policy = data.aws_iam_policy_document.cloudtrail_assume_role.json
 }
 
@@ -37,7 +38,7 @@ data "aws_iam_policy_document" "CloudTrail_CloudWatchLogs_Role_Policy" {
 }
 
 resource "aws_iam_policy" "the_trail_iam_policy" {
-  name        = "${var.project_codename}_trail_policy"
+  name        = "GrantTrailAccessToCloudwatchLogGroup"
   path        = "/${var.project_codename}/"
   description = "This policy grants the trail the permissions required to create a CloudWatch Logs log stream in the log group ${aws_cloudwatch_log_group.the_trail_cwlg.name} and to deliver CloudTrail events to that log stream."
   policy      = data.aws_iam_policy_document.CloudTrail_CloudWatchLogs_Role_Policy.json
@@ -110,7 +111,8 @@ data "aws_iam_policy_document" "lambda_assume_role" {
 }
 
 resource "aws_iam_role" "the_lambda_function_role" {
-  name               = "${var.project_codename}_lambda_function"
+  name               = "Lambda-CloudwatchLogGroupAccess"
+  path               = "/${var.project_codename}/"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role.json
 }
 
@@ -130,7 +132,7 @@ data "aws_iam_policy_document" "the_function_policy_document" {
 }
 
 resource "aws_iam_policy" "the_function_iam_policy" {
-  name        = "lambda_logging"
+  name        = "GrantLambdaWriteAccessToCloudwatchLogGroup"
   path        = "/${var.project_codename}/"
   description = "IAM policy for logging from a lambda"
   policy      = data.aws_iam_policy_document.the_function_policy_document.json
@@ -157,7 +159,7 @@ data "aws_iam_policy_document" "AllowPublishOnly_policy_doc" {
 }
 
 resource "aws_iam_policy" "AllowPublishOnly" {
-  name        = "AllowPublishOnly"
+  name        = "AllowSNSPublishAPIOnly"
   path        = "/${var.project_codename}/"
   description = "IAM policy for publishing an SNS message from a lambda"
   policy      = data.aws_iam_policy_document.AllowPublishOnly_policy_doc.json

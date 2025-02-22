@@ -1,6 +1,6 @@
 variable "aws_region" {
-  type    = string
-  default = "af-south-1"
+  type     = string
+  nullable = false
 }
 
 variable "enable_logging" {
@@ -15,15 +15,17 @@ variable "event_names" {
 
 variable "event_sources" {
   type    = list(string)
-  default = ["ec2.amazonaws.com", "lambda.amazonaws.com"]
+  default = ["ec2.amazonaws.com", "lambda.amazonaws.com", "s3.amazonaws.com", "kms.amazonaws.com"]
 }
 
 variable "project_codename" {
-  type    = string
-  default = "cocorico"
+  type     = string
+  nullable = false
+  default  = "cocorico"
 }
 
 variable "sns_topic_subscribers_email_address" {
-  type    = set(string)
-  default = ["randriakj@gmail.com", "koloinaimaginieur@gmail.com"]
+  type        = set(string)
+  description = "The list of email addresses of people who want to receive the notification"
+  default     = ["randriakj@gmail.com", "koloinaimaginieur@gmail.com"]
 }
